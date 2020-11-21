@@ -1,0 +1,998 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>A Star Search Introduction</title>
+
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/ntnuerc.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+        <script src="https://daybrush.com/scenejs/release/latest/dist/scene.min.js"></script>
+		
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+        <script src="js/ntnu.js"></script>
+    </head>
+    <body>
+        <div class="reveal">
+        <div class="slides">
+            
+<section id="start" data-state="start">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<h1>A Star Search Introduction</h1>
+
+<p>
+      Jacky Baltes<br>
+      National Taiwan Normal University<br>
+      Taipei, Taiwan<br>
+      <a href="mailto:jacky.baltes@ntnu.edu.tw">jacky.baltes@ntnu.edu.tw</a><br>
+</p>
+
+21 November 2020
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-4c026225-874b-44b9-b887-35608150d529" ><span id="id-4c026225-874b-44b9-b887-35608150d529"><img id="img-id-4c026225-874b-44b9-b887-35608150d529"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-f88acaa8-5b16-4028-ae7a-b9df0c2aa634" ><span id="id-f88acaa8-5b16-4028-ae7a-b9df0c2aa634"><img id="img-id-f88acaa8-5b16-4028-ae7a-b9df0c2aa634" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00003_frag_00001" data-state="slide_00003_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<h1>AI and Search - Recap</h1>
+
+<div class="jb-text">
+<ul>
+<li>Search is the common component of many AI problems (e.g., planning, logistic problems, job shop scheduling, computer vision,
+machine learning, logic programming, navigation, ...)</li>
+<li>Uninformed search (DFS, BFS, IDDFS, ...) as basic engines for search</li>
+<li>Heuristic functions as a general method to guide the search, to incorporate many different
+types of domain knowledge</li>
+<li>Best First Search as a first algorithm to exploit this knowledge</li>
+</ul>
+</div>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-0ee789d7-8797-4bf6-b950-0f08b21aadaa" ><span id="id-0ee789d7-8797-4bf6-b950-0f08b21aadaa"><img id="img-id-0ee789d7-8797-4bf6-b950-0f08b21aadaa"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-3776eb9b-67c6-45eb-a91a-927fdd78b698" ><span id="id-3776eb9b-67c6-45eb-a91a-927fdd78b698"><img id="img-id-3776eb9b-67c6-45eb-a91a-927fdd78b698" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00004_frag_00001" data-state="slide_00004_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<h1>Best First Search</h1>
+
+<ul>
+<li>Expand all children of the current node</li>
+<li>Sort the queue of open nodes based on the heuristic value of each node</li>
+<li>Select the node with the best heuristic in the entire queue to expand next</li>
+<li>Select the node with the best heuristic value in the set of children only, then we are implementing
+a hill climbing algorithm</li>
+<li>Follows the best estimated path, until it becomes not promising anymore.</li>
+<li>This is also called greedy search</li>
+</ul>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-62a2a820-6fda-4b70-9e1d-2ce169cec49c" ><span id="id-62a2a820-6fda-4b70-9e1d-2ce169cec49c"><img id="img-id-62a2a820-6fda-4b70-9e1d-2ce169cec49c"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-3d1ed229-39ed-4b96-af9a-6a9d8dd6ad84" ><span id="id-3d1ed229-39ed-4b96-af9a-6a9d8dd6ad84"><img id="img-id-3d1ed229-39ed-4b96-af9a-6a9d8dd6ad84" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00005_frag_00001" data-state="slide_00005_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<h1>Best First Search</h1>
+
+<div class="jb-text">
+<ul>
+<li>The heuristic value of a node is only an estimate</li>
+<li>So it may mislead the search. Select a node with a better heuristic value from some other part of the
+tree</li>
+<li>No guarantee that we will find the optimal solution</li>
+<li>If we have two nodes with the same heuristic value, then we may pick the lower node</li>
+<li>Would like to prefer nodes in the higher parts of the tree, since it will be less work to get 
+to the solution then</li>
+</ul>
+</div>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-930def55-5863-4b47-a7aa-ce15af61245c" ><span id="id-930def55-5863-4b47-a7aa-ce15af61245c"><img id="img-id-930def55-5863-4b47-a7aa-ce15af61245c"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-36a06dec-20e3-4e23-9cfc-808ca8e2e259" ><span id="id-36a06dec-20e3-4e23-9cfc-808ca8e2e259"><img id="img-id-36a06dec-20e3-4e23-9cfc-808ca8e2e259" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00006_frag_00001" data-state="slide_00006_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<h1>Best First Search</h1>
+
+<ul>
+<li>The heuristic value of a node is only an estimate</li>
+<li>So it may mislead the search. Select a node with a better heuristic value from some other part of the
+tree</li>
+<li>No guarantee that we will find the optimal solution</li>
+<li>If we have two nodes with the same heuristic value, then we may pick the lower node</li>
+<li>Would like to prefer nodes in the higher parts of the tree, since it will be less work to get 
+to the solution then</li>
+</ul>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-e31c3804-71c3-40e5-ad65-03fbbd37f284" ><span id="id-e31c3804-71c3-40e5-ad65-03fbbd37f284"><img id="img-id-e31c3804-71c3-40e5-ad65-03fbbd37f284"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-740a42ba-f2ed-4477-a4c7-2bd6a0ec40b1" ><span id="id-740a42ba-f2ed-4477-a4c7-2bd6a0ec40b1"><img id="img-id-740a42ba-f2ed-4477-a4c7-2bd6a0ec40b1" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00007_frag_00001" data-state="slide_00007_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+<h1>Sample Tree</h1>
+
+<span id="id-a712e395-3f88-43d5-8819-0a980dbdfed0" ><span id="id-a712e395-3f88-43d5-8819-0a980dbdfed0"><img id="img-id-a712e395-3f88-43d5-8819-0a980dbdfed0"     src="assets/images/g3.svg"/></span>
+</span>
+
+
+<div class="jb-text">
+<ul>
+<li>A->B->E->C->H->P->D->J->K->R (Solution)</li>
+<li>Miss the higher up solution of N</li>
+<li>Change the heuristic function to also include the cost from the root to the current
+node</li>
+<li>Heuristic is an estimate of the distance from the current node to a goal node (solution)</li>
+<li>The cost from the root to the current node is known (not an estimate)</li>
+<li>Cost can be defined as</li>
+<ul>
+<li>The level in the tree (How many actions)</li>
+<li>The distance I had to drive to reach that node</li>
+<li>...</li>
+</ul>
+</ul>
+</div>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-49420f55-bc5d-44dd-96ab-c3481e11f73d" ><span id="id-49420f55-bc5d-44dd-96ab-c3481e11f73d"><img id="img-id-49420f55-bc5d-44dd-96ab-c3481e11f73d"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-35860388-7de1-416d-8a3f-1a520ae19614" ><span id="id-35860388-7de1-416d-8a3f-1a520ae19614"><img id="img-id-35860388-7de1-416d-8a3f-1a520ae19614" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00008_frag_00001" data-state="slide_00008_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<h1>Two Part Heuristic</h1>
+
+f(n) = g(n) + h(n)
+
+<div class="jb-text">
+<ul>
+<li>g(n): actual cost from the root to node n</li>
+<li>h(n): estimate of the cost from node n to a solution</li>
+<li>Search is guided by the sum of g(n) and h(n)</li>
+</ul>
+</div>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-a665b693-601c-4e08-99bb-1b62c415c5fe" ><span id="id-a665b693-601c-4e08-99bb-1b62c415c5fe"><img id="img-id-a665b693-601c-4e08-99bb-1b62c415c5fe"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-f8753e39-e0e5-4558-82e6-8d4be7640968" ><span id="id-f8753e39-e0e5-4558-82e6-8d4be7640968"><img id="img-id-f8753e39-e0e5-4558-82e6-8d4be7640968" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00009_frag_00001" data-state="slide_00009_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<span id="id-8804939d-233a-4302-9d60-72717fe55eb2" ><span id="id-8804939d-233a-4302-9d60-72717fe55eb2"><img id="img-id-8804939d-233a-4302-9d60-72717fe55eb2"     src="assets/images/g4.svg"/></span>
+</span>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-5aa7c94c-3111-4e3c-8cb5-d18bb2a8787a" ><span id="id-5aa7c94c-3111-4e3c-8cb5-d18bb2a8787a"><img id="img-id-5aa7c94c-3111-4e3c-8cb5-d18bb2a8787a"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-7a9d0856-47a1-4ff3-af53-33b12f07a053" ><span id="id-7a9d0856-47a1-4ff3-af53-33b12f07a053"><img id="img-id-7a9d0856-47a1-4ff3-af53-33b12f07a053" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00010_frag_00001" data-state="slide_00010_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<h1>Trace of Two Heuristic Search (Algorithm A)</h1>
+
+<div class="jb-text">
+<code>
+<pre>
+Empty [A(0+3)]
+A [ B(1+2) C(1+3)]
+B [ E(2+1) C(1+3) D(2+3) F(2+7) ]
+E [ C(1+3) D(2+3) J(3+4) F(2+7) ]
+C [ H(2+2) D(2+3) J(3+4) G(2+6) F(2+7) ]  
+H [ P(3+1) D(2+3) J(3+4) G(2+6) F(2+7) Q(3+9) ]
+P [ D(2+3) J(3+4) G(2+6) F(2+7) Q(3+9) ]  
+D [ J(3+4) G(2+6) F(2+7) Q(3+9) I(3+10) ]
+J [ K(4+3) G(2+6) F(2+7) Q(3+9) I(3+10) ]
+K [ R(5+0) G(2+6) F(2+7) Q(3+9) I(3+10) ]
+R Solution
+</pre> 
+</code>
+</div>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-6c17d81f-bbc8-475d-9316-8612354556db" ><span id="id-6c17d81f-bbc8-475d-9316-8612354556db"><img id="img-id-6c17d81f-bbc8-475d-9316-8612354556db"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-d5efbefe-771c-4702-adbf-3d7282cdecbf" ><span id="id-d5efbefe-771c-4702-adbf-3d7282cdecbf"><img id="img-id-d5efbefe-771c-4702-adbf-3d7282cdecbf" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00011_frag_00001" data-state="slide_00011_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<h1>Admissible Heuristic</h1>
+
+<div class="jb-text">
+<ul>
+<li>An <b>admissible</b> heuristic is defined as a heuristic function that always
+<b>underestimates or is equal to</b> the distance from the node to the goal</li>
+<li>Examples</li>
+<ul>
+<li>Straight line distance is an admissible heuristic for navigation domains</li>
+<li>Number of boat crossings must be less than (2n+1) for n people still need to be moved (Jealous Husband domain)</li> 
+</ul>
+</ul>
+</div>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-e2eca864-221a-4e62-a673-30d6b601cfbd" ><span id="id-e2eca864-221a-4e62-a673-30d6b601cfbd"><img id="img-id-e2eca864-221a-4e62-a673-30d6b601cfbd"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-f8bb4d41-8733-435d-8514-07ae70e5e0a2" ><span id="id-f8bb4d41-8733-435d-8514-07ae70e5e0a2"><img id="img-id-f8bb4d41-8733-435d-8514-07ae70e5e0a2" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00012_frag_00001" data-state="slide_00012_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<h1>A* Search</h1>
+
+<div class="jb-text">
+<ul>
+<li>Apply two part heuristic (cost + heuristic estimate) to a problem (also called algorithm A)</li>
+<li>with an <b>admissible</b> heuristic</li>
+<li>This algorithm is called A*</li>
+<li>A* algorithm is guaranteed to find the optimal solution</li>
+</ul>
+</div>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-90aa0c76-9e1e-4661-94cd-028c297cbda7" ><span id="id-90aa0c76-9e1e-4661-94cd-028c297cbda7"><img id="img-id-90aa0c76-9e1e-4661-94cd-028c297cbda7"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-879af16c-6409-4357-adad-05d150f18b2c" ><span id="id-879af16c-6409-4357-adad-05d150f18b2c"><img id="img-id-879af16c-6409-4357-adad-05d150f18b2c" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00013_frag_00001" data-state="slide_00013_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<h1>Example of A* Algorithm</h1>
+
+<span id="id-148b6886-3266-4282-8bf1-94bdc32f4514" ><span id="id-148b6886-3266-4282-8bf1-94bdc32f4514"><img id="img-id-148b6886-3266-4282-8bf1-94bdc32f4514"     src="assets/images/g5.svg"/></span>
+</span>
+
+
+<div class="jb-text">
+<code>
+<pre>
+Empty [A(0+3)]
+A [ B(1+2) C(1+2)]
+B [ E(2+1) C(1+3) D(2+3) F(2+7) ]
+E [ J(3+0) C(1+3) D(2+3) F(2+7) ]
+J [ C(1+3) K(4+0) D(2+3)  F(2+7) ]   
+C [ G(2+0) K(4+0) H(2+2) D(2+3) F(2+7) ]  
+G [ N(3+0) K(4+0) H(2+2) D(2+3) O(3+5) F(2+7) ]  
+N Solution
+</pre> 
+</code>
+</div>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-45ce8ce6-fcb7-4931-b16a-9ecefaa166ab" ><span id="id-45ce8ce6-fcb7-4931-b16a-9ecefaa166ab"><img id="img-id-45ce8ce6-fcb7-4931-b16a-9ecefaa166ab"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-ca225e08-4e2e-4cfb-af2f-5288f8706362" ><span id="id-ca225e08-4e2e-4cfb-af2f-5288f8706362"><img id="img-id-ca225e08-4e2e-4cfb-af2f-5288f8706362" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00014_frag_00001" data-state="slide_00014_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<h1>Informal Proof of A* Search</h1>
+
+<div class="jb-text">
+<ul>
+<li>As we expand the search space, we do more moves</li>
+<li>Cost of a node, more and more will be contributed by the actual cost rather
+than the heuristic estimate</li>
+<li>With an admissible heuristic, the cost of nodes along a path
+can only go up, never down</li>
+<li>Estimates will become more and more accurate</li>
+<li>If the heuristic value can also be an overestimate, that means that the
+cost of a node could suddenly drop as we expand a path</li>
+<li>But that is impossible for an admissible heuristic</li>
+
+<li>
+</ul>
+</div>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-d4d322a8-95a3-44a1-8708-3940dc4b1601" ><span id="id-d4d322a8-95a3-44a1-8708-3940dc4b1601"><img id="img-id-d4d322a8-95a3-44a1-8708-3940dc4b1601"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-22668199-fefa-49d1-b20b-0d3e42b2bdb6" ><span id="id-22668199-fefa-49d1-b20b-0d3e42b2bdb6"><img id="img-id-22668199-fefa-49d1-b20b-0d3e42b2bdb6" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00015_frag_00001" data-state="slide_00015_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+
+<div class="jb-output-code jb-render">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-output jb-render">
+
+<h1>Efficiency of Heuristics</h1>
+
+<div class="jb-text">
+<ul>
+<li>If the error of an admissible heuristic is bounded by a <b>constant</b>, 
+then the search will require only a linear amount of time in the depth of the search</li>
+<li>So instead of the runtime of the search being b**d, the runtime of the search is only C*d</li>
+</ul>
+</div>
+</div><!-- end of jb-output jb-render -->
+</div><!-- end of jb-output-code jb-render -->
+
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-560bd2d2-e254-4008-90d4-66d7cabae859" ><span id="id-560bd2d2-e254-4008-90d4-66d7cabae859"><img id="img-id-560bd2d2-e254-4008-90d4-66d7cabae859"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-6d6fe8e7-7f5d-464f-a247-675007c32dfa" ><span id="id-6d6fe8e7-7f5d-464f-a247-675007c32dfa"><img id="img-id-6d6fe8e7-7f5d-464f-a247-675007c32dfa" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+<section id="slide_00016_frag_00001" data-state="slide_00016_frag_00001">
+
+
+<!-- Header -->
+  
+
+<!-- Background -->
+
+
+<!-- Slide -->
+<div class="jb-slide">
+<div class="jb-input jb-render jb-code" style="text-align:center">
+
+<!-- start embedded style -->
+
+<!-- end embedded style -->
+<div class="jb-input-code jb-render">
+<div class="highlight" style="background: #f8f8f8; color:#101010;display=inline-block;"><pre style="line-height: 125%"><span></span>b <span style="color: #666666">=</span> <span style="color: #666666">12</span>
+d <span style="color: #666666">=</span> <span style="color: #666666">15</span>
+
+leaves <span style="color: #666666">=</span> b<span style="color: #666666">**</span>d
+<span style="color: #008000">print</span>(<span style="color: #BA2121">f&#39;Exponential complexity: </span><span style="color: #BB6688; font-weight: bold">{</span>b<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">**</span><span style="color: #BB6688; font-weight: bold">{</span>d<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">==</span><span style="color: #BB6688; font-weight: bold">{</span>leaves<span style="color: #666666">/1e12</span><span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121"> trillion&#39;</span>)
+
+C <span style="color: #666666">=</span> leaves<span style="color: #666666">/</span>d
+
+<span style="color: #008000">print</span>(<span style="color: #BA2121">f&#39;Linear complexity: </span><span style="color: #BB6688; font-weight: bold">{</span>C<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">*</span><span style="color: #BB6688; font-weight: bold">{</span>d<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">==</span><span style="color: #BB6688; font-weight: bold">{</span>C<span style="color: #666666">*</span>d<span style="color: #666666">/1e12</span><span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121"> trillion&#39;</span>)
+
+speedup <span style="color: #666666">=</span> <span style="color: #666666">1e6</span>
+<span style="color: #008000">print</span>( <span style="color: #BA2121">f&quot;Now assume that we get a computer that is </span><span style="color: #BB6688; font-weight: bold">{</span>speedup<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121"> faster&quot;</span>)
+<span style="color: #008000">print</span>( <span style="color: #BA2121">f&quot;What size of problem can we solve now?&quot;</span>)
+
+cd <span style="color: #666666">=</span> speedup
+<span style="color: #008000">print</span>( <span style="color: #BA2121">f&quot;Linear complexity: the new </span><span style="color: #BB6688; font-weight: bold">{</span>speedup<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121"> faster computer can solve problems of size </span><span style="color: #BB6688; font-weight: bold">{</span>d<span style="color: #666666">*</span>speedup<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">&quot;</span>)
+
+
+<span style="color: #008000; font-weight: bold">for</span> d1 <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(<span style="color: #666666">15</span>,<span style="color: #666666">25</span>):
+  <span style="color: #008000; font-weight: bold">if</span> b<span style="color: #666666">**</span>d1<span style="color: #666666">/</span>speedup <span style="color: #666666">&gt;=</span> leaves:
+    nd <span style="color: #666666">=</span> d1
+    <span style="color: #008000; font-weight: bold">break</span>
+
+<span style="color: #008000">print</span>( <span style="color: #BA2121">f&quot;Exponential complexity: The new </span><span style="color: #BB6688; font-weight: bold">{</span>speedup<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">  computer can solve problems of size </span><span style="color: #BB6688; font-weight: bold">{</span>nd<span style="color: #666666">-1</span><span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">&quot;</span>)
+</pre></div>
+
+</div><!-- end of jb-input-code jb-render -->
+
+</div>
+<div class="jb-print jb-render">
+<div class="jb-output jb-render code" style="text-align:center">
+<div class="jb-stdout code" style="display:inline-block; width:90%">
+<pre >
+Exponential complexity: 12**15==15407.021574586368 trillion
+Linear complexity: 1027134771639091.2*15==15407.021574586368 trillion
+Now assume that we get a computer that is 1000000.0 faster
+What size of problem can we solve now?
+Linear complexity: the new 1000000.0 faster computer can solve problems of size 15000000.0
+Exponential complexity: The new 1000000.0  computer can solve problems of size 20
+</pre>
+</div>
+</div>
+
+</div><!-- end of jb-print jb-render -->
+
+</div>
+<!-- Footer -->
+
+<div class="jb-footer-left plain">
+    <span id="id-14b14f76-20d0-4580-a040-4d9c70c438cc" ><span id="id-14b14f76-20d0-4580-a040-4d9c70c438cc"><img id="img-id-14b14f76-20d0-4580-a040-4d9c70c438cc"     src="assets/images/logo.png"/></span>
+</span>
+
+</div>
+<div class="jb-footer-right plain">
+    <span id="id-ca3b0c82-6d8a-4216-b1ae-3cef0d680582" ><span id="id-ca3b0c82-6d8a-4216-b1ae-3cef0d680582"><img id="img-id-ca3b0c82-6d8a-4216-b1ae-3cef0d680582" width="162" height="138"   src="assets/images/robbi.png"/></span>
+</span>
+
+</div>
+
+<aside class="notes">
+
+</aside>
+
+
+
+</section>
+        </div>
+        </div>
+
+        <script src="js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.initialize({
+                math: {
+                    mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+                    config: 'TeX-AMS_HTML-full',  // See http://docs.mathjax.org/en/latest/config-files.html
+                    // tex2jax: {
+                    //     inlineMath: [['$', '$'], ['\(', '\)']],
+                    //     displayMath: [['$$', '$$'], ['\[', '\]']],
+                    //     processEscapes: true,
+                    //     processEnvironments: true,
+                    //     skipTags: ['script', 'noscript', 'style', 'textarea', 'code', 'pre'],
+                    //     displayAlign: 'center',
+                    // }                
+                },
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/math/math.js', async: true }
+                ]
+            });
+        </script>
+
+        <script>
+            <!-- Assets -->
+var assets = {
+"robbi" : new JBImage( "robbi", "12677", "162", "138", null, null, "assets/images/robbi", "png" ),
+"logo" : new JBImage( "logo", "12033", "0", "0", null, null, "assets/images/logo", "png" ),
+"fira-logo-1" : new JBImage( "fira-logo-1", "93836", "0", "0", null, null, "assets/images/FIRA-logo-1", "png" ),
+"pairLogo" : new JBImage( "pairLogo", "63051", "0", "0", null, null, "assets/images/pairLogo", "png" ),
+"g3" : new JBImage( "g3", "12810", "0", "0", null, null, "assets/images/g3", "svg" ),
+"g4" : new JBImage( "g4", "14828", "0", "0", null, null, "assets/images/g4", "svg" ),
+"g5" : new JBImage( "g5", "14828", "0", "0", null, null, "assets/images/g5", "svg" ) 
+};
+var assetInstances = {
+    "id-f88acaa8-5b16-4028-ae7a-b9df0c2aa634": assets["robbi"],
+    "id-3776eb9b-67c6-45eb-a91a-927fdd78b698": assets["robbi"],
+    "id-3d1ed229-39ed-4b96-af9a-6a9d8dd6ad84": assets["robbi"],
+    "id-36a06dec-20e3-4e23-9cfc-808ca8e2e259": assets["robbi"],
+    "id-740a42ba-f2ed-4477-a4c7-2bd6a0ec40b1": assets["robbi"],
+    "id-35860388-7de1-416d-8a3f-1a520ae19614": assets["robbi"],
+    "id-f8753e39-e0e5-4558-82e6-8d4be7640968": assets["robbi"],
+    "id-7a9d0856-47a1-4ff3-af53-33b12f07a053": assets["robbi"],
+    "id-d5efbefe-771c-4702-adbf-3d7282cdecbf": assets["robbi"],
+    "id-f8bb4d41-8733-435d-8514-07ae70e5e0a2": assets["robbi"],
+    "id-879af16c-6409-4357-adad-05d150f18b2c": assets["robbi"],
+    "id-ca225e08-4e2e-4cfb-af2f-5288f8706362": assets["robbi"],
+    "id-22668199-fefa-49d1-b20b-0d3e42b2bdb6": assets["robbi"],
+    "id-6d6fe8e7-7f5d-464f-a247-675007c32dfa": assets["robbi"],
+    "id-ca3b0c82-6d8a-4216-b1ae-3cef0d680582": assets["robbi"],
+    "id-4c026225-874b-44b9-b887-35608150d529": assets["logo"],
+    "id-0ee789d7-8797-4bf6-b950-0f08b21aadaa": assets["logo"],
+    "id-62a2a820-6fda-4b70-9e1d-2ce169cec49c": assets["logo"],
+    "id-930def55-5863-4b47-a7aa-ce15af61245c": assets["logo"],
+    "id-e31c3804-71c3-40e5-ad65-03fbbd37f284": assets["logo"],
+    "id-49420f55-bc5d-44dd-96ab-c3481e11f73d": assets["logo"],
+    "id-a665b693-601c-4e08-99bb-1b62c415c5fe": assets["logo"],
+    "id-5aa7c94c-3111-4e3c-8cb5-d18bb2a8787a": assets["logo"],
+    "id-6c17d81f-bbc8-475d-9316-8612354556db": assets["logo"],
+    "id-e2eca864-221a-4e62-a673-30d6b601cfbd": assets["logo"],
+    "id-90aa0c76-9e1e-4661-94cd-028c297cbda7": assets["logo"],
+    "id-45ce8ce6-fcb7-4931-b16a-9ecefaa166ab": assets["logo"],
+    "id-d4d322a8-95a3-44a1-8708-3940dc4b1601": assets["logo"],
+    "id-560bd2d2-e254-4008-90d4-66d7cabae859": assets["logo"],
+    "id-14b14f76-20d0-4580-a040-4d9c70c438cc": assets["logo"],
+    "id-a712e395-3f88-43d5-8819-0a980dbdfed0": assets["g3"],
+    "id-8804939d-233a-4302-9d60-72717fe55eb2": assets["g4"],
+    "id-148b6886-3266-4282-8bf1-94bdc32f4514": assets["g5"]
+};
+<!-- End of Assets -->
+
+            convertURLs(assetInstances, "smart-path");
+        </script>
+        <script>
+            <!-- Characters -->
+var characters =
+{};
+<!-- End of Characters -->
+
+        </script>
+    </body>
+</html>
